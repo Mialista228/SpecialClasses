@@ -12,6 +12,9 @@ enum class Operation(val symbol: String) {
     },
     DIVIDE("/") {
         override fun apply(a: Double, b: Double) = a / b
+    },
+    MODULO("%") {
+        override fun apply(a: Double, b: Double) = a % b
     };
 
     abstract fun apply(a: Double, b: Double): Double
