@@ -1,15 +1,19 @@
 package uz.ttpu.specialclasseslib.task01
 
-enum class OrderStatus { NEW, PAID, SHIPPED, DELIVERED }
+enum class OrderStatus {
+    NEW, PAID, SHIPPED, DELIVERED, CANCELLED
+}
 
 fun main() {
     println("Statuses: ${OrderStatus.entries.joinToString()}")
     print("Current status of your order: ")
     val text = readln().trim().uppercase()
-    val status = try {
-        OrderStatus.valueOf(text)
-    } catch (e: IllegalArgumentException) {
-        println("'$text' is not a status. Valid: ${OrderStatus.entries.map { it.name }}")
+    val status = OrderStatus.entries.firstOrNull {
+        it.name.equals(text, ignoreCase = true)
+    }
+
+    if (status == null) {
+        println("Unknown status")
         return
     }
     println("You entered ${status.name}: step ${status.ordinal + 1} of ${OrderStatus.entries.size}")
