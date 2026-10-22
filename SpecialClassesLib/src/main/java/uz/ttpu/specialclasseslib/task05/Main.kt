@@ -10,11 +10,13 @@ sealed class Payment {
         val email: String
     ) : Payment()
 
+    data class Crypto(val wallet: String) : Payment()
+
     data object Cash : Payment()
 }
 
 fun readPayment(): Payment? {
-    println("1) Credit card   2) PayPal   3) Cash")
+    println("1) Credit card   2) PayPal   3) Cash   4) Crypto")
     print("Choose a payment method: ")
 
     return when (readln().trim()) {
@@ -33,6 +35,11 @@ fun readPayment(): Payment? {
 
         "3" -> Payment.Cash
 
+        "4" -> {
+            print("Wallet address: ")
+            Payment.Crypto(readln().trim())
+        }
+
         else -> null
     }
 }
@@ -48,6 +55,9 @@ fun process(payment: Payment, amount: Double) {
 
         is Payment.PayPal ->
             println("Sent a payment request for $amount to ${payment.email}")
+
+        is Payment.Crypto ->
+            println("Waiting for a transfer to wallet ${payment.wallet}")
 
         Payment.Cash ->
             println("Please pay $amount in cash at the desk")
